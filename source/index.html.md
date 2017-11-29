@@ -1,13 +1,12 @@
 ---
-title: SpinCommerce desarrolladores
+title: SpinCommerce Developers
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
   - ruby
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/lord/slate'>Documentación proporcionada por Slate</a>
+  - <a href='https://github.com/lord/slate' target="blank">Documentado con Slate</a>
 
 includes:
   - errors
@@ -17,49 +16,59 @@ search: true
 
 # Introducción
 
-Bienvenido a la documentación para desarrolladores de SpinCommerce. Acá podrás encontrar todo lo necesario para desarrollar tus propias aplicaciones conectadas al API de nuestra plataforma.
+Bienvenido a la documentación para desarrolladores de SpinCommerce. Aquí podrás encontrar todo lo necesario para desarrollar tus propias aplicaciones conectadas al API de nuestra plataforma.
 
 Si tienes alguna duda, no dudes en escribirnos a [soporte@spincommerce.com](mailto:soporte@spincommerce.com).
 
+<aside class="notice">
+Para poder hacer uso del API de SpinCommerce, necesitas contratar una tienda en el plan Profesional o plan Corporativo.
+</aside>
+
+# Versionamiento
+
+**Esta documentación corresponde a la versión 1 (o V1) del API.**
+
+El endpoint base de la versión 1 es `https://api.spincommerce.com/v1/` 
+
+Implementaciones futuras del API que no sean compatibles con esta versión, serán implementados en un endpoint distinto, con el fin de garantizar que tus desarrollos no se vean afectados.
+
 # Autenticación
 
-> To authorize, use this code:
+> Ejemplo de un request autenticado
 
 ```ruby
-require 'kittn'
+require 'net/http'
+require 'json'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
+url = URI('https://api.spincommerce.com/v1/orders')
+request = Net::HTTP.new(uri)
+# Recuerda reemplazar tu-api-token por tu propio Token
+headers = {
+  'Authorization' => 'Token tu-api-token',
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+response = request.get(uri, headers)
+JSON.parse(response)
 ```
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+# Recuerda reemplazar 'tu-api-token' por tu propio Token
+curl "https://api.spincommerce.com/v1/orders" \
+  -H "Authorization: Token tu-api-token"
 ```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+Todos los requests deben ser realizados sobre HTTPS. Requests hechos sobre HTTP serán rechazados.
 </aside>
+
+Para autenticar tus requests, solo debes incluir un API Token en el Header de cada request. Puedes crear un API Token en [https://app.spincommerce.com/api_tokens](https://app.spincommerce.com/api_tokens)
+
+`Authorization: Bearer tu-api-token`
+
+Todos los API Tokens tienen permiso de lectura, que acceder a endpoints del API con método `GET`. Para poder acceder a endpoints con métodos `POST, PATCH y DELETE`, debes generar un API Token con permisos de escritura.
+
+
 
 # Kittens
 
