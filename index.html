@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>SpinCommerce desarrolladores</title>
+    <title>SpinCommerce Developers</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -223,6 +223,9 @@
             <a href="#introduccion" class="toc-h1 toc-link" data-title="Introducción">Introducción</a>
           </li>
           <li>
+            <a href="#versionamiento" class="toc-h1 toc-link" data-title="Versionamiento">Versionamiento</a>
+          </li>
+          <li>
             <a href="#autenticacion" class="toc-h1 toc-link" data-title="Autenticación">Autenticación</a>
           </li>
           <li>
@@ -244,47 +247,56 @@
           </li>
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/lord/slate'>Documentación proporcionada por Slate</a></li>
+            <li><a href='https://github.com/lord/slate' target="blank">Documentado con Slate</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduccion'>Introducción</h1>
-<p>Bienvenido a la documentación para desarrolladores de SpinCommerce. Acá podrás encontrar todo lo necesario para desarrollar tus propias aplicaciones conectadas al API de nuestra plataforma.</p>
+<p>Bienvenido a la documentación para desarrolladores de SpinCommerce. Aquí podrás encontrar todo lo necesario para desarrollar tus propias aplicaciones conectadas al API de nuestra plataforma.</p>
 
 <p>Si tienes alguna duda, no dudes en escribirnos a <a href="mailto:soporte@spincommerce.com">soporte@spincommerce.com</a>.</p>
-<h1 id='autenticacion'>Autenticación</h1>
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
-</blockquote>
-
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
-
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code>Authorization: meowmeowmeow</code></p>
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+Para poder hacer uso del API de SpinCommerce, necesitas contratar una tienda en el plan Profesional o plan Corporativo.
 </aside>
+<h1 id='versionamiento'>Versionamiento</h1>
+<p><strong>Esta documentación corresponde a la versión 1 (o V1) del API.</strong></p>
+
+<p>El endpoint base de la versión 1 es <code>https://api.spincommerce.com/v1/</code> </p>
+
+<p>Implementaciones futuras del API que no sean compatibles con esta versión, serán implementados en un endpoint distinto, con el fin de garantizar que tus desarrollos no se vean afectados.</p>
+<h1 id='autenticacion'>Autenticación</h1>
+<blockquote>
+<p>Ejemplo de un request autenticado</p>
+</blockquote>
+<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'net/http'</span>
+<span class="nb">require</span> <span class="s1">'json'</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="s1">'https://api.spincommerce.com/v1/orders'</span><span class="p">)</span>
+<span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+<span class="c1"># Recuerda reemplazar tu-api-token por tu propio Token</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">'Authorization'</span> <span class="o">=&gt;</span> <span class="s1">'Token tu-api-token'</span><span class="p">,</span>
+  <span class="s1">'Content-Type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
+  <span class="s1">'Accept'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+<span class="no">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># Recuerda reemplazar 'tu-api-token' por tu propio Token</span>
+curl <span class="s2">"https://api.spincommerce.com/v1/orders"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: Token tu-api-token"</span>
+</code></pre>
+<aside class="notice">
+Todos los requests deben ser realizados sobre HTTPS. Requests hechos sobre HTTP serán rechazados.
+</aside>
+
+<p>Para autenticar tus requests, solo debes incluir un API Token en el Header de cada request. Puedes crear un API Token en <a href="https://app.spincommerce.com/api_tokens">https://app.spincommerce.com/api_tokens</a></p>
+
+<p><code>Authorization: Bearer tu-api-token</code></p>
+
+<p>Todos los API Tokens tienen permiso de lectura, que acceder a endpoints del API con método <code>GET</code>. Para poder acceder a endpoints con métodos <code>POST, PATCH y DELETE</code>, debes generar un API Token con permisos de escritura.</p>
 <h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
