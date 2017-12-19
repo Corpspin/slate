@@ -4,6 +4,7 @@ title: SpinCommerce Developers
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
   - ruby
+  - python
 
 toc_footers:
   - <a href='https://github.com/lord/slate' target="blank">Documentado con Slate</a>
@@ -16,7 +17,7 @@ search: true
 
 # Introducción
 
-Bienvenido a la documentación para desarrolladores de SpinCommerce. Aquí podrás encontrar todo lo necesario para desarrollar tus propias aplicaciones conectadas al API de nuestra plataforma.
+Bienvenido a la documentación para desarrolladores de SpinCommerce. Aquí podrás encontrar todo lo necesario para desarrollar tus propias aplicaciones conectadas al API JSON de nuestra plataforma.
 
 Si tienes alguna duda, no dudes en escribirnos a [soporte@spincommerce.com](mailto:soporte@spincommerce.com).
 
@@ -28,13 +29,13 @@ Para poder hacer uso del API de SpinCommerce, necesitas contratar una tienda en 
 
 **Esta documentación corresponde a la versión 1 (o V1) del API.**
 
-El endpoint base de la versión 1 es `https://api.spincommerce.com/v1/` 
+El endpoint base de la versión 1 es `https://api.spincommerce.com/v1/`.
 
 Implementaciones futuras del API que no sean compatibles con esta versión, serán implementados en un endpoint distinto, con el fin de garantizar que tus desarrollos no se vean afectados.
 
 # Autenticación
 
-> Ejemplo de un request autenticado
+> Ejemplo de un request autenticado:
 
 ```ruby
 require 'net/http'
@@ -54,191 +55,403 @@ JSON.parse(response)
 
 ```shell
 # Recuerda reemplazar 'tu-api-token' por tu propio Token
-curl "https://api.spincommerce.com/v1/orders" \
-  -H "Authorization: Token tu-api-token"
+curl --request GET \
+  --url https://api.spincommerce.com/v1/orders \
+  --header 'Authorization: Token tu-api-token'
 ```
 
 <aside class="notice">
 Todos los requests deben ser realizados sobre HTTPS. Requests hechos sobre HTTP serán rechazados.
 </aside>
 
-Para autenticar tus requests, solo debes incluir un API Token en el Header de cada request. Puedes crear un API Token en [https://app.spincommerce.com/api_tokens](https://app.spincommerce.com/api_tokens)
+Para autenticar tus requests, solo debes incluir un API Token en el Header de cada request. Puedes generar un API Token en [https://app.spincommerce.com/api_tokens](https://app.spincommerce.com/api_tokens).
 
-`Authorization: Bearer tu-api-token`
+`Authorization: Token tu-api-token`
 
-Todos los API Tokens tienen permiso de lectura, que acceder a endpoints del API con método `GET`. Para poder acceder a endpoints con métodos `POST, PATCH y DELETE`, debes generar un API Token con permisos de escritura.
+Todos los API Tokens tienen permiso de lectura, que permite acceder a endpoints del API con método `GET`. Para poder acceder a endpoints con métodos `POST, PATCH y DELETE`, debes generar un API Token con permisos de escritura.
 
+# Órdenes
 
-
-# Kittens
-
-## Get All Kittens
+## Obtener todas las órdenes
 
 ```ruby
-require 'kittn'
+require 'uri'
+require 'net/http'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
+url = URI("https://api.spincommerce.com/v1/orders")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Get.new(url)
+request["Authorization"] = 'Token tu-api-token'
+
+response = http.request(request)
+puts response.read_body
 ```
 
 ```python
-import kittn
+import http.client
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+conn = http.client.HTTPSConnection("api.spincommerce.com")
+
+payload = ""
+
+headers = { 'Authorization': "Token tu-api-token" }
+
+conn.request("GET", "/v1/orders", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
 ```
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+curl --request GET \
+  --url https://api.spincommerce.com/v1/orders \
+  --header 'Authorization: Token tu-api-token'
 ```
 
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
+> Ejemplo de respuesta a este request:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+{
+  "orders": [
+    {
+      "id": 35123,
+      "code": "29269BC2",
+      "status": "paid",
+      "created_at": "2017-12-18T11:10:07.144Z",
+      "updated_at": "2017-12-18T11:12:25.652Z",
+      "currency": "CLP",
+      "subtotal": 30000,
+      "discount_name": null,
+      "discount_total": 0,
+      "shipping_option_name": "Envío a todo Chile",
+      "shipping_price": 2450,
+      "total": 32450,
+      "confirmed_at": "2017-12-18T11:11:01.759Z",
+      "paid_at": "2017-12-18T11:12:25.636Z",
+      "delivered_at": null,
+      "payment_type": "bank_transfer",
+      "shipping_country": "Chile",
+      "shipping_state": "Región Metropolitana de Santiago",
+      "shipping_city": "Santiago",
+      "shipping_address": "Mi dirección 123",
+      "shipping_postal_code": "7750000",
+      "custom_fields": null,
+      "customer_id": 4600,
+      "customer_first_name": "John",
+      "customer_last_name": "Lennon",
+      "customer_email": "john@lennon.com",
+      "customer_phone": "1234567",
+      "courier_name": null,
+      "courier_tracking_code": null,
+      "shipping_comments": null,
+      "items": [
+        {
+          "id": 60822,
+          "created_at": "2017-12-18T11:10:07.162Z",
+          "updated_at": "2017-12-18T11:10:07.162Z",
+          "product_id": 19699,
+          "product_name": "Silla Madera",
+          "product_url": "https://apitest.spincommerce.com/products/silla-madera",
+          "product_images": [
+            "https://spincommercecdn.imgix.net/shops/924/products/19699/690215b1-942e-4b4a-97bf-d09916644aef/product.jpg"
+          ],
+          "variant_name": null,
+          "variant_id": 25609,
+          "variant_sku": null,
+          "unit_price": 30000,
+          "units": 1,
+          "weight": 0
+        }
+      ]
+    },
+    {
+      ...
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "total_count": 2,
+      "total_pages": 1,
+      "per_page": 50,
+      "current_page": "https://api.spincommerce.com/v1/orders?page=1&per_page=50",
+      "previous_page": null,
+      "next_page": null,
+      "first_page": "https://api.spincommerce.com/v1/orders?page=1&per_page=50",
+      "last_page": "https://api.spincommerce.com/v1/orders?page=1&per_page=50"
+    }
   }
-]
+}
 ```
 
-This endpoint retrieves all kittens.
+Este endpoint devuelve todas las órdenes en estado `paid` o `delivered`.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET https://api.spincommerce.com/v1/orders`
 
-### Query Parameters
+### Parámetros
 
-Parameter | Default | Description
+Parámetro | Default | Descripción
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+status | null | Permite filtrar las órdenes por estado, los valores aceptados son `paid` o `delivered`. 
+per_page | 50 | Número de resultados por request, debe ser un número mayor o igual a 1 y menor o igual a 50.
+page | 1 | Número de paginación del request, debe ser un número positivo.
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
+## Obtener una orden específica
 
 ```ruby
-require 'kittn'
+require 'uri'
+require 'net/http'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
+url = URI("https://api.spincommerce.com/v1/orders/35123")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Get.new(url)
+request["Authorization"] = 'Token tu-api-token'
+
+response = http.request(request)
+puts response.read_body
 ```
 
 ```python
-import kittn
+import http.client
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
+conn = http.client.HTTPSConnection("api.spincommerce.com")
+
+payload = ""
+
+headers = { 'Authorization': "Token tu-api-token" }
+
+conn.request("GET", "/v1/orders/35123", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
 ```
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
+curl --request GET \
+  --url https://api.spincommerce.com/v1/orders/35123 \
+  --header 'Authorization: Token tu-api-token'
 ```
 
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
+> Ejemplo de respuesta a este request:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "order": {
+    "id": 35123,
+    "code": "29269BC2",
+    "status": "paid",
+    "created_at": "2017-12-18T11:10:07.144Z",
+    "updated_at": "2017-12-18T11:12:25.652Z",
+    "currency": "CLP",
+    "subtotal": 30000,
+    "discount_name": null,
+    "discount_total": 0,
+    "shipping_option_name": "Envío a todo Chile",
+    "shipping_price": 2450,
+    "total": 32450,
+    "confirmed_at": "2017-12-18T11:11:01.759Z",
+    "paid_at": "2017-12-18T11:12:25.636Z",
+    "delivered_at": null,
+    "payment_type": "bank_transfer",
+    "shipping_country": "Chile",
+    "shipping_state": "Región Metropolitana de Santiago",
+    "shipping_city": "Santiago",
+    "shipping_address": "Mi dirección 123",
+    "shipping_postal_code": "7750000",
+    "custom_fields": null,
+    "customer_id": 4600,
+    "customer_first_name": "John",
+    "customer_last_name": "Lennon",
+    "customer_email": "john@lennon.com",
+    "customer_phone": "1234567",
+    "courier_name": null,
+    "courier_tracking_code": null,
+    "shipping_comments": null,
+    "items": [
+      {
+        "id": 60822,
+        "created_at": "2017-12-18T11:10:07.162Z",
+        "updated_at": "2017-12-18T11:10:07.162Z",
+        "product_id": 19699,
+        "product_name": "Silla Madera",
+        "product_url": "https://apitest.spincommerce.com/products/silla-madera",
+        "product_images": [
+          "https://spincommercecdn.imgix.net/shops/924/products/19699/690215b1-942e-4b4a-97bf-d09916644aef/product.jpg"
+        ],
+        "variant_name": null,
+        "variant_id": 25609,
+        "variant_sku": null,
+        "unit_price": 30000,
+        "units": 1,
+        "weight": 0
+      }
+    ]
+  }
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+Este endpoint devuelve una orden en estado `paid` o `delivered`.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET https://api.spincommerce.com/v1/orders/<id>`
 
-### URL Parameters
+### Parámetros
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+Parámetro | Descripción
+--------- | ------- | -----------
+id | id de la orden.
 
-## Delete a Specific Kitten
+## Actualizar una orden
 
 ```ruby
-require 'kittn'
+require 'uri'
+require 'net/http'
+require 'json'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
+url = URI("https://api.spincommerce.com/v1/orders/35123")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Put.new(url)
+request["Authorization"] = 'Token tu-api-token'
+request["content-type"] = 'application/json'
+params = { order: {
+             status: 'delivered',
+             send_status_notification: true,
+             courier_name: 'FedEx',
+             courier_tracking_code: '54321',
+             shipping_comments: 'My comments' 
+           }  
+         }
+
+request.body = params.to_json
+
+response = http.request(request)
+puts response.read_body
 ```
 
 ```python
-import kittn
+import http.client
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
+conn = http.client.HTTPSConnection("api.spincommerce.com")
+
+payload = "{\n\t\"order\": {\n\t\t\"status\": \"delivered\",\n\t\t\"send_status_notification\": true,\n\t\t\"courier_name\": \"FedEx\",\n\t\t\"courier_tracking_code\": \"54321\",\n\t\t\"shipping_comments\": \"All good!\"\n\t}\n} "
+
+headers = {
+    'Authorization': "Token tu-api-token",
+    'content-type': "application/json"
+    }
+
+conn.request("PUT", "/v1/orders/35123", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
 ```
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
+curl --request PUT \
+  --url https://api.spincommerce.com/v1/orders/35123 \
+  --header 'Authorization: Token tu-api-token' \
+  --header 'content-type: application/json' \
+  --data '{
+  "order": {
+    "status": "delivered",
+    "send_status_notification": true,
+    "courier_name": "FedEx",
+    "courier_tracking_code": "54321",
+    "shipping_comments": "All good!"
+  }
+} '
 ```
 
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
+> Ejemplo de respuesta a este request:
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+  "order": {
+    "id": 35123,
+    "code": "29269BC2",
+    "status": "delivered",
+    "created_at": "2017-12-18T11:10:07.144Z",
+    "updated_at": "2017-12-19T13:53:30.803Z",
+    "currency": "CLP",
+    "subtotal": 30000,
+    "discount_name": null,
+    "discount_total": 0,
+    "shipping_option_name": "Envío a todo Chile",
+    "shipping_price": 2450,
+    "total": 32450,
+    "confirmed_at": "2017-12-18T11:11:01.759Z",
+    "paid_at": "2017-12-18T11:12:25.636Z",
+    "delivered_at": "2017-12-19T13:53:30.797Z",
+    "payment_type": "bank_transfer",
+    "shipping_country": "Chile",
+    "shipping_state": "Región Metropolitana de Santiago",
+    "shipping_city": "Santiago",
+    "shipping_address": "Mi dirección 123",
+    "shipping_postal_code": "7750000",
+    "custom_fields": null,
+    "customer_id": 4600,
+    "customer_first_name": "John",
+    "customer_last_name": "Lennon",
+    "customer_email": "john@lennon.com",
+    "customer_phone": "1234567",
+    "courier_name": "FedEx",
+    "courier_tracking_code": "54321",
+    "shipping_comments": "All good!",
+    "items": [
+      {
+        "id": 60822,
+        "created_at": "2017-12-18T11:10:07.162Z",
+        "updated_at": "2017-12-18T11:10:07.162Z",
+        "product_id": 19699,
+        "product_name": "Silla Madera",
+        "product_url": "https://apitest.spincommerce.com/products/silla-madera",
+        "product_images": [
+          "https://spincommercecdn.imgix.net/shops/924/products/19699/690215b1-942e-4b4a-97bf-d09916644aef/product.jpg"
+        ],
+        "variant_name": null,
+        "variant_id": 25609,
+        "variant_sku": null,
+        "unit_price": 30000,
+        "units": 1,
+        "weight": 0
+      }
+    ]
+  }
 }
 ```
 
-This endpoint deletes a specific kitten.
+### HTTP Request 
 
-### HTTP Request
+`PUT https://api.spincommerce.com/v1/orders/<id>`
 
-`DELETE http://example.com/kittens/<ID>`
+### Parámetros
 
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+Parámetro | default | Descripción
+--------- | ------- | -----------
+id | null | id de la orden.
+status | null | Estado de la orden, puede ser `paid` o `delivered`.
+send_status_notification | false | Boolean que indica si se debe enviar un email de notificación al cliente informando del cambio de estado.
+courier_name | null | El nombre de la empresa transportadora de la orden.
+courier_tracking_code | null | Código de rastreo del courier.
+shipping_comments | null | Comentarios adicionales referentes a la entrega de la orden.
 
