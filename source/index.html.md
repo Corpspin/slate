@@ -18,7 +18,7 @@ search: true
 
 # Introducción
 
-Bienvenido a la documentación para desarrolladores de SpinCommerce. Aquí podrás encontrar todo lo necesario para desarrollar tus propias aplicaciones conectadas al API JSON de nuestra plataforma.
+Bienvenido a la documentación para desarrolladores de SpinCommerce. Aquí podrás encontrar todo lo necesario para desarrollar tus propias aplicaciones conectadas al API JSON de nuestra plataforma o personalizar el diseño y funciones de tu tienda.
 
 Si tienes alguna duda, no dudes en escribirnos a [soporte@spincommerce.com](mailto:soporte@spincommerce.com).
 
@@ -26,7 +26,9 @@ Si tienes alguna duda, no dudes en escribirnos a [soporte@spincommerce.com](mail
 Para poder hacer uso del API de SpinCommerce, necesitas contratar una tienda en el plan Profesional o plan Corporativo.
 </aside>
 
-# Versionamiento
+# API
+
+## Versionamiento
 
 **Esta documentación corresponde a la versión 1 (o V1) del API.**
 
@@ -34,7 +36,7 @@ El endpoint base de la versión 1 es `https://api.spincommerce.com/v1/`.
 
 Implementaciones futuras del API que no sean compatibles con esta versión, serán implementados en un endpoint distinto, con el fin de garantizar que tus desarrollos no se vean afectados.
 
-# Autenticación
+## Autenticación
 
 > Ejemplo de un request autenticado:
 

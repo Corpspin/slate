@@ -1,6 +1,6 @@
-# Órdenes
+## Órdenes
 
-## Obtener todas las órdenes
+### Obtener todas las órdenes
 
 ```ruby
 require 'uri'
@@ -119,11 +119,11 @@ curl --request GET \
 
 Este endpoint devuelve todas las órdenes en estado `paid` o `delivered`.
 
-### HTTP Request
+#### HTTP Request
 
 `GET https://api.spincommerce.com/v1/orders`
 
-### Parámetros
+#### Parámetros
 
 Parámetro | Default | Descripción
 --------- | ------- | -----------
@@ -131,7 +131,7 @@ status | null | Permite filtrar las órdenes por estado, los valores aceptados s
 per_page | 50 | Número de resultados por request, debe ser un número mayor o igual a 1 y menor o igual a 50.
 page | 1 | Número de paginación del request, debe ser un número positivo.
 
-## Obtener una orden específica
+### Obtener una orden específica
 
 ```ruby
 require 'uri'
@@ -233,17 +233,17 @@ curl --request GET \
 
 Este endpoint devuelve una orden en estado `paid` o `delivered`.
 
-### HTTP Request
+#### HTTP Request
 
 `GET https://api.spincommerce.com/v1/orders/<id>`
 
-### Parámetros
+#### Parámetros
 
 Parámetro | Descripción
 --------- | ------- | -----------
 id | id de la orden.
 
-## Actualizar una orden
+### Actualizar una orden
 
 ```ruby
 require 'uri'
@@ -369,11 +369,11 @@ curl --request PUT \
 ```
 Este endpoint actualiza los datos de una orden.
 
-### HTTP Request 
+#### HTTP Request 
 
 `PUT https://api.spincommerce.com/v1/orders/<id>`
 
-### Parámetros
+#### Parámetros
 
 Parámetro | default | Descripción
 --------- | ------- | -----------
