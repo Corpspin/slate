@@ -11,6 +11,7 @@ toc_footers:
 
 includes:
   - api/orders
+  - shops
   - errors
 
 search: true
@@ -72,6 +73,9 @@ Para autenticar tus requests, solo debes incluir un API Token en el Header de ca
 `Authorization: Token tu-api-token`
 
 Todos los API Tokens tienen permiso de lectura, que permite acceder a endpoints del API con método `GET`. Para poder acceder a endpoints con métodos `POST, PATCH y DELETE`, debes generar un API Token con permisos de escritura.
+
+
+
 
 
 
