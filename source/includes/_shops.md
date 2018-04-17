@@ -1347,10 +1347,10 @@ Si quieres usar la imagen de tamaño original (tamaño en el cual se subió a la
  <br>
  Lista de filtro que puedes aplicar en `resize`:
  
- * 'w=500&h=500' : Tamaño personalizado pero mantiene proporciones
- * 'w=500&h=500&fit=crop' : Tamaño personalizado, lo fuerza y no mantiene proporciones originales
- * 'w=500' : Ancho personalizado, mantiene proporciones
- * 'h=500' : Alto personalizado, mantiene proporciones
+ * `w=500&h=500` : Tamaño personalizado pero mantiene proporciones
+ * `w=500&h=500&fit=crop` : Tamaño personalizado, lo fuerza y no mantiene proporciones originales
+ * `w=500` : Ancho personalizado, mantiene proporciones
+ * `h=500` : Alto personalizado, mantiene proporciones
 
 Se puede hacer pruebas en la aplicación [sandbox](https://sandbox.imgix.com/create) y pegar el código correspondiente, siempre usando `resize` para contenido dinámico.
  
