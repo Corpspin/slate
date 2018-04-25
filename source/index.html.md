@@ -4,7 +4,7 @@ title: SpinCommerce Developers
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
   - ruby
-  - python
+  - liquid
 
 toc_footers:
   - <a href='https://github.com/lord/slate' target="blank">Documentado con Slate</a>

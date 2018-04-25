@@ -666,7 +666,7 @@ En este otro ejemplo sólo mostraremos la descripción del producto, que se reem
 
 
 <div class="center-column"></div>
-``` html
+``` liquid
 <div class="entry">
   {{ product.description }}
 </div>
@@ -675,7 +675,7 @@ En este otro ejemplo sólo mostraremos la descripción del producto, que se reem
 Se reemplazará por:
 
 <div class="center-column"></div>
-``` html
+``` liquid
 <div class="entry">
   Esta es la descripción del producto.
 </div>
