@@ -3,9 +3,13 @@ Esta documentación te servirá de ayuda para la personalización del diseño y 
 
 Las secciones se divide en: 
 
-* **Plantillas**: cómo funcionan y los códigos generales de cada una. 
+* **Plantillas**: aspecto generales y cómo funciona un tema (theme). 
 
-* **Programación liquid**: cómo programar una tienda usando etiquetas liquid. 
+* **Estructura Plantillas**: cuáles son las plantilla de nuestros theme y como están construidas.
+
+* **Programación liquid**: cómo programar una tienda usando etiquetas liquid.
+
+* **Construyendo un Tema**: cómo personalizar un tema (theme) y código que te ayudará a potenciar una tienda. 
 
 Si no encuentras lo que necesitas escribe a soporte@spincommerce.com para ayudarte. 
 
@@ -13,6 +17,10 @@ Si no encuentras lo que necesitas escribe a soporte@spincommerce.com para ayudar
 En todos los planes de SpinCommerce puedes editar completamente las plantillas y personalizar el diseño de la tienda, permite cambiar aspectos gráficos, estructuras y características generales.<br>
 
 A través del <b>editor avanzado</b> puedes acceder al código HTML/CSS/JS y <b>liquid</b>.
+</aside>
+
+<aside class="warning">
+Para ver los ejemplo del código Liquid, en la columna derecha, debes hacer clic en el a pestaña Liquid. 
 </aside>
 
 ## Plantillas
@@ -643,9 +651,9 @@ Ejemplo de condicional, donde se usa las etiquetas lógicas, y se usan  llave y 
 
 ### Introducción a Liquid
 
-Liquid es un motor de templates que fue creado con requerimientos específicos, que tiene que tener un markup simple y resultados fácil de entender.
+Liquid es un código de programación para templates, que tiene que tener un markup y lenguaje simple, fácil de entender e implementar. 
 
-Un ejemplo de un código *liquid* de una tienda, que muestra el listado de los nombres de todos los productos creados y visibles de la tienda, además agrega páginación, este código se encuentra en la plantilla `products.liquid`:
+Un ejemplo de un código *liquid* de una tienda, que muestra el listado de los nombres de todos los productos creados y visibles de la tienda, además agrega paginación, este código se encuentra en la plantilla `products.liquid`:
 
 <div class="center-column"></div>
 ``` liquid
@@ -752,14 +760,14 @@ Debes tener en cuenta que si cambias el nombre al objeto, automáticamente se ac
 
 ### Objetos: Variables
 
-Lo **objetos en Liquid**, contienen atributos, que son contenidos dinámicos que se muestran en una página. Por ejemplo, el objeto producto tiene el atributo denominado `name` que se puede utilizar para generar el nombre del producto.
+Lo **objetos en Liquid**, contienen atributos, que son contenidos dinámicos que se muestran en una página. Por ejemplo, el objeto producto tiene el atributo denominado `name` que se puede utilizar para generar el nombre del producto, que se debe usar como `product.name`.
 
-**Los objetos de liquid también se conocen a menudo como variables. Son expresiones que representan un valor, que pueden ser:**
+**Los objetos de liquid también se conocen a menudo como variables y existen diferentes tipos:**
 
-- una cadena de texto, como el nombre de un producto o una URL
-- un número, como el precio de un producto
-- un conjunto de elementos, como un listado de productos en oferta
-- un objeto que a su vez contiene otras variables, como `brand` (que contiene `brand.name` y `brand.url`).
+- cadena de texto (ej.: nombre de la tienda)
+- número (ej.: precio de un producto)
+- un conjunto de elementos (ej.: productos de una categoría)
+- un objeto que a su vez contiene otras variables, (ej.: `brand` que contiene `brand.name` y `brand.url`).
 
 Para mostrar el atributo de un objeto, se debe envolver el nombre del objeto usando `{{` para abrir y `}}` para cerrar, como se muestra a continuación:
 
@@ -768,7 +776,7 @@ Para mostrar el atributo de un objeto, se debe envolver el nombre del objeto usa
 {{ product.name }}
 ```
 <br>
-En el ejemplo se mostraría el nombre del producto, por ejemplo: 'Silla madera'.
+En el ejemplo se mostraría el nombre del producto, por ejemplo: <b>'Silla madera'</b>.
 
 
 ### Objetos: Variables globales
