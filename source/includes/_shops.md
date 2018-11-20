@@ -1251,7 +1251,7 @@ Los objetos que se pueden usar son:
           {% if link.category.has_subcategories %}
             <ul class="submenu">
             {% for subcategory in link.category.subcategories %}
-              <li class="{% if subcategory.name == category.name %} current {% endif %}">
+              <li class="{% if subcategory.name == category.name and category.parent_category.name == link.category.name %} current {% endif %}">
                 <a href="{{ subcategory.url }}">{{ subcategory.name }}</a>
                 </li>
             {% endfor %}
@@ -1267,7 +1267,7 @@ Código para crear un **menú personalizado para las categorías de productos**,
 
 ### Menú Navegación por página de Categoría
 
-> Código de menú de navegación personalizado donde el slug es `main`.
+> Código de menú de navegación para categorías de productos.
 
 ``` liquid
 <!-- si la plantilla es categoría -->
