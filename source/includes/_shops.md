@@ -1330,7 +1330,7 @@ Si se modifica el `slug` de una contenido destacado en el administrador de la ti
 
 Un contenido destacado te permite hacer galerías, mostrar banners, carruseles de imágenes, etc. 
 
-### Control de imágenes
+### Tamaños Personalizados Imágenes
 
 A cualquier imagen de la tienda se le pueden asignar tamaños personalizados, usando el filtro `resize`. Además de otras propiedades que te permiten controlar las imágenes. Por ejemplo:
 
@@ -1355,13 +1355,260 @@ Si quieres usar la imagen de tamaño original (tamaño en el cual se subió a la
  <br>
  Lista de filtro que puedes aplicar en `resize`:
  
- * `w=500&h=500` : Tamaño personalizado pero mantiene proporciones
- * `w=500&h=500&fit=crop` : Tamaño personalizado, lo fuerza y no mantiene proporciones originales
- * `w=500` : Ancho personalizado, mantiene proporciones
- * `h=500` : Alto personalizado, mantiene proporciones
+ * `w=500&h=500` : Tamaño personalizado pero mantiene proporciones originales de la imagen.
+ * `w=500&h=500&fit=crop` : Tamaño personalizado, lo fuerza y no mantiene proporciones originales de la imagen.
+ * `w=500&h=500&fit=fill&bg=fff` : Tamaño personalizado, mantiene tamaño original y si el alto o ancho no coincide, agrega fondo blanco.
+ * `w=500&h=500&fit=clamp` : Tamaño personalizado, mantiene tamaño original y si el alto o ancho no coincide, repite parte de la imagen hasta completar tamaño establecido.
+ * `w=500` : Ancho personalizado, mantiene proporciones.
+ * `h=500` : Alto personalizado, mantiene proporciones.
 
 Se puede hacer pruebas en la aplicación [sandbox](https://sandbox.imgix.com/create) y pegar el código correspondiente, siempre usando `resize` para contenido dinámico.
  
- <br>
- <br>
+
+ 
+### Filtros y selector de orden de los productos
+
+En cualquier tienda se pueden agregar filtros por: categoría, sub categoría, marca y tipo variantes. Puedes agregarlo para que los usuarios de la tienda filtren los productos y puedan encontrar lo que buscan fácilmente. Puedes usar 1 o más filtros juntos. 
+
+<aside class="notice">
+Puedes agregar varios filtros dentro del mismo `form`, así como también el selector para ordenar los productos.
+</aside>
+
+
+<b>Filtro por categorías y sub categorías en products.liquid</b>
+
+Permite filtrar los productos por categorías y sub categorías, usando un `<select>` en la plantilla products.liquid, se puede agregar arriba del listado de productos. 
+
+
+> En products.liquid, ejemplo de filtro por categoría y subcategoría:
+
+``` liquid
+	<form method="GET"> 
+	   
+		<div class="form-group">
+		    <select onchange="this.form.submit()" name="category" class="form-select">
+		      <option value=''>Categoría</option>
+		      {% for category in shop.categories %}
+            <option {% if category.slug == product_filters.category %}selected{% endif %} value="{{ category.slug }}">{{ category.name }}</option>
+            {% for subcategory in category.subcategories %}
+              <option {% if subcategory.slug == product_filters.category %}selected{% endif %} value="{{ subcategory.slug }}">> {{ subcategory.name }}</option>
+            {% endfor %}
+          {% endfor %}
+		    </select>
+		</div>
+		{% endif %}
+		
+	</form>
+```
+
+<b>Filtro por marca en products.liquid</b>
+
+Permite filtrar los productos por marca, usando un `<select>` en la plantilla products.liquid, se puede agregar arriba del listado de productos. 
+
+
+> En products.liquid, ejemplo de filtro por marca:
+
+``` liquid
+<form method="GET"> 
+   
+   {% if shop.brands.size > 0 %}
+	<div class="form-group">
+	    <select onchange="this.form.submit()" name="brand" class="form-select">
+	      <option value=''>Todas las marcas</option>
+	      {% for brand in shop.brands %}
+	        <option {% if brand.slug == product_filters.brand %}selected{% endif %} value="{{ brand.slug }}">{{ brand.name }}</option>
+	      {% endfor %}
+	    </select>
+	</div>
+	{% endif %}
+	
+</form>
+```
+
+<b>Filtro por variantes en products.liquid</b>
+
+Permite filtrar los productos por tipo de variantes creadas, usando un `<select>` en la plantilla products.liquid, se puede agregar arriba del listado de productos. Mostrará todos los tipos de variantes creadas y los valores de esas variantes. 
+
+
+> En products.liquid, ejemplo de filtro por variantes:
+
+``` liquid
+<form method="GET"> 
+   
+   {% for option in shop.variant_options %}
+	<div class="form-group">
+	    <select onchange="this.form.submit()" name="variants[]" class="form-select">
+	      <option value="">{{ option.title }} - {{ option.slug}}</option>
+          {% for value in option.values %}
+          <option {% if product_filters.variants contains value.to_filter %}selected{% endif %} value="{{ value.to_filter }}">{{ value.title }}</option>
+	      {% endfor %}
+	    </select>
+	</div>
+	{% endfor %}
+	
+</form>
+```
+
+
+> En products.liquid, ejemplo de filtro por un tipo de variante determinado (debes reemplazar la palabra "slug", que es el nombre sin espacios, ni acentos y en minúscula del tipo de variante, ej.: talla):
+
+``` liquid
+<form method="GET"> 
+
+	<div class="form-group">
+	    <select onchange="this.form.submit()" name="variants[]" class="form-select">
+	    <option value="">{{ shop.variant_options.slug.title }}</option>
+          {% for value in shop.variant_options.slug.values %}
+          <option {% if product_filters.variants contains value.to_filter %}selected{% endif %} value="{{ value.to_filter }}">{{ value.title }}</option>
+	      {% endfor %}
+	    </select>
+	</div>
+	
+</form>
+```
+
+<b>Selector para cambiar orden como se muestran los productos, en products.liquid, category.liquid, brand.liquid</b>
+
+Permite ordenar los productos por nombre de la A a la Z, por fecha de creación y por precio de menor a mayor.
+
+> Ejemplo de selector para cambiar el orden de los productos (products.liquid, category.liquid, brand.liquid):
+
+``` liquid
+<form method="GET"> 
+
+	<div class="form-group">
+  		<label>Ordernar por</label>
+  		<select onchange="this.form.submit()" name="sort">
+			<option {% if product_filters.sort == 'name:asc' %}selected{% endif %} value='name:asc'>Nombre (A-Z)</option>
+			<option {% if product_filters.sort == 'name:desc' %}selected{% endif %} value='name:desc'>Nombre (Z-A)</option> 
+			<option {% if product_filters.sort == 'price:asc' %}selected{% endif %} value="price:asc">Precio menor a mayor</option>
+			<option {% if product_filters.sort == 'price:desc' %}selected{% endif %} value="price:desc">Precio mayor a menor</option>
+			<option {% if product_filters.sort == 'created_at:desc' %}selected{% endif %} value="created_at:desc">Nuevos primeros</option>
+			<option {% if product_filters.sort == 'created_at:asc' %}selected{% endif %} value="created_at:asc">Antiguos primeros</option>       
+		  </select> 
+   	</div>
+	
+</form>
+```
+
+<b>Filtro por sub categorías en category.liquid</b>
+
+Permite filtrar los productos por una sub categoría, usando un `<select>` en la plantilla category.liquid, se puede agregar arriba del listado de productos. 
+
+
+> En category.liquid, ejemplo de filtro por subcategoría:
+
+``` liquid
+<form method="GET">  
+ 
+	{% if category.has_subcategories %}
+	<div class="form-group">
+	    <select class="form-control" onchange="this.form.submit()" name="category">
+			<option value=''>Subcategorías</option>
+			{% for subcategory in category.subcategories %}
+			<option {% if subcategory.slug == product_filters.category %}selected{% endif %} value="{{ subcategory.slug }}">{{ subcategory.name }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	{% endif %}	
+
+</form>
+```
+
+<b>Filtro por marca en category.liquid</b>
+
+Permite filtrar los productos por una marca, usando un `<select>` en la plantilla category.liquid, se puede agregar arriba del listado de productos. 
+
+
+> En category.liquid, ejemplo de filtro por marca:
+
+``` liquid
+<form method="GET">  
+ 
+	{% if category.brands.size > 0 %}
+	<div class="form-group">
+	    <select onchange="this.form.submit()" name="brand" class="form-select">
+			<option value=''>Todas las marcas</option>
+			{% for brand in category.brands %}
+	        <option {% if brand.slug == product_filters.brand %}selected{% endif %} value="{{ brand.slug }}">{{ brand.name }}</option>
+	      {% endfor %}
+		</select>
+	</div>
+	{% endif %}	
+
+</form>
+```
+
+<b>Filtro por tipo de variantes en category.liquid</b>
+
+Permite filtrar los productos por un tipo de variantes, usando un `<select>` en la plantilla category.liquid, se puede agregar arriba del listado de productos. 
+
+
+> En category.liquid, ejemplo de filtro por tipo de variantes:
+
+``` liquid
+<form method="GET">  
+ 
+ 	{% for option in category.variant_options %}
+	<div class="form-group">
+	    <select onchange="this.form.submit()" name="variants[]" class="form-select">
+			<option class="option-title" value="">{{ option.title }}</option>
+			{% for value in option.values %}
+	          <option {% if product_filters.variants contains value.to_filter %}selected{% endif %} value="{{ value.to_filter }}">{{ value.title }}</option>
+	        {% endfor %}
+		</select>
+	</div>
+	{% endfor %}
+
+</form>
+```
+
+<b>Filtro por categorías en brand.liquid</b>
+
+Permite filtrar los productos por una categoría, usando un `<select>` en la plantilla brand.liquid, se puede agregar arriba del listado de productos. 
+
+
+> En brand.liquid, ejemplo de filtro por categorías:
+
+``` liquid
+<form method="GET">  
+ 
+	<div class="form-group">
+	    <select onchange="this.form.submit()" name="category" class="form-select">
+			<option value=''>Categoría</option>
+			{% for category in brand.categories %}
+            <option {% if category.slug == product_filters.category %}selected{% endif %} value="{{ category.slug }}">{{ category.name }}</option>
+			{% endfor %}
+		</select>
+	</div>
+
+</form>
+```
+
+<b>Filtro por tipo de variantes en brand.liquid</b>
+
+Permite filtrar los productos por un tipo de variantes, usando un `<select>` en la plantilla brand.liquid, se puede agregar arriba del listado de productos. 
+
+
+> En brand.liquid, ejemplo de filtro por tipo de variantes:
+
+``` liquid
+<form method="GET">  
+ 
+ 	{% for option in brand.variant_options %}
+	<div class="form-group">
+	    <select onchange="this.form.submit()" name="variants[]" class="form-select">
+			<option class="option-title" value="">{{ option.title }}</option>
+			{% for value in option.values %}
+	          <option {% if product_filters.variants contains value.to_filter %}selected{% endif %} value="{{ value.to_filter }}">{{ value.title }}</option>
+	        {% endfor %}
+		</select>
+	</div>
+	{% endfor %}
+
+</form>
+```
+
+ 
+<br><br>
  
