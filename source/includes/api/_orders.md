@@ -2,40 +2,6 @@
 
 ### Obtener todas las órdenes
 
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://api.spincommerce.com/v1/orders")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Get.new(url)
-request["Authorization"] = 'Token tu-api-token'
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("api.spincommerce.com")
-
-payload = ""
-
-headers = { 'Authorization': "Token tu-api-token" }
-
-conn.request("GET", "/v1/orders", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
 ```shell
 curl --request GET \
   --url https://api.spincommerce.com/v1/orders \
@@ -133,40 +99,6 @@ page | 1 | Número de paginación del request, debe ser un número positivo.
 
 ### Obtener una orden específica
 
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://api.spincommerce.com/v1/orders/35123")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Get.new(url)
-request["Authorization"] = 'Token tu-api-token'
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("api.spincommerce.com")
-
-payload = ""
-
-headers = { 'Authorization': "Token tu-api-token" }
-
-conn.request("GET", "/v1/orders/35123", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
-
 ```shell
 curl --request GET \
   --url https://api.spincommerce.com/v1/orders/35123 \
@@ -244,55 +176,6 @@ Parámetro | Descripción
 id | id de la orden.
 
 ### Actualizar una orden
-
-```ruby
-require 'uri'
-require 'net/http'
-require 'json'
-
-url = URI("https://api.spincommerce.com/v1/orders/35123")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-request = Net::HTTP::Put.new(url)
-request["Authorization"] = 'Token tu-api-token'
-request["content-type"] = 'application/json'
-params = { order: {
-             status: 'delivered',
-             send_status_notification: true,
-             courier_name: 'FedEx',
-             courier_tracking_code: '54321',
-             shipping_comments: 'My comments' 
-           }  
-         }
-
-request.body = params.to_json
-
-response = http.request(request)
-puts response.read_body
-```
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("api.spincommerce.com")
-
-payload = "{\n\t\"order\": {\n\t\t\"status\": \"delivered\",\n\t\t\"send_status_notification\": true,\n\t\t\"courier_name\": \"FedEx\",\n\t\t\"courier_tracking_code\": \"54321\",\n\t\t\"shipping_comments\": \"All good!\"\n\t}\n} "
-
-headers = {
-    'Authorization': "Token tu-api-token",
-    'content-type': "application/json"
-    }
-
-conn.request("PUT", "/v1/orders/35123", payload, headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
-```
 
 ```shell
 curl --request PUT \

@@ -3,7 +3,6 @@ title: SpinCommerce Developers
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - ruby
   - liquid
 
 toc_footers:
@@ -11,6 +10,8 @@ toc_footers:
 
 includes:
   - api/orders
+  - api/products
+  - api/variants
   - shops
   - errors
 
