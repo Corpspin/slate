@@ -1120,7 +1120,7 @@ Los templates de SpinCommerce son:
 {{ shop.google_analytics }}
 ```
 
-Código que se inserta antes del cierre del `</header>`, que interpreta lo que se agrega en *Preferencias > Información General* en el campo de texto de Google Adwords en el administrador de la tienda. 
+Código que se inserta antes del cierre del `</header>`, que interpreta lo que se agrega en *Integraciones > Analítica* en el campo de texto de Google Adwords en el administrador de la tienda. 
 
 
 ### Código de Google Tag Manager 
@@ -1129,7 +1129,7 @@ Código que se inserta antes del cierre del `</header>`, que interpreta lo que s
 {{ shop.google_tag_manager }}
 ```
 
-Código que se inserta al principio del `<body>`, que interpreta lo que se agrega en *Preferencias > Información General* en el campo de texto de Google Tag Manager en el administrador de la tienda. 
+Código que se inserta al principio del `<body>`, que interpreta lo que se agrega en *Integraciones > Analítica* en el campo de texto de Google Tag Manager en el administrador de la tienda. 
 
 
 ### Código redes sociales
@@ -1175,7 +1175,7 @@ Código que se inserta al principio del `<body>`, que interpreta lo que se agreg
 </ul>
 ```
 
-Los links a las redes sociales se agregar en *Preferencias > Redes Sociales* en el administrador de la tienda. 
+Los links a las redes sociales se agregar en *Configuración > Tienda > Redes Sociales* en el administrador de la tienda. 
 
 Este código se debe agregar donde se quieran mostrar los links a las redes sociales de la tienda. Por defecto esta en el *footer* de cada *theme* disponible.
 
