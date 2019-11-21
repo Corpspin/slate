@@ -785,7 +785,13 @@ Los siguientes objetos se pueden utilizar y acceder desde cualquier archivo del 
 **Generales**
 
 - `template`
-- `shop`
+
+**shop**
+- `shop.name`
+- `shop.logo_url`
+- `shop.contact_address`
+- `shop.contact_email`
+- `shop.contact_phone`
 
 **Productos**
 
@@ -803,6 +809,7 @@ Los siguientes objetos se pueden utilizar y acceder desde cualquier archivo del 
 
 **Carro**
 
+- `cart_count`
 - `items_count`
 - `order`
 
@@ -1159,11 +1166,11 @@ Código que se inserta al principio del `<body>`, que interpreta lo que se agreg
   </li> 
   {% endif %} 
   
-  {% if shop.googleplus_url %} 
-  <li class="google-link"> 
-    <a target="_blank" title="Google+!" href="{{shop.googleplus_url}}">Conócenos!</a> 
-   </li> 
-  {% endif %} 
+  {% if shop.whatsapp_number %}
+	<li class="whatsapp-link">
+		<a target="_blank" title="WhatsApp" href="https://api.whatsapp.com/send?phone={{ shop.whatsapp_number }}">Whatsapp</a>
+	</li>
+   {% endif %}
   
 </ul>
 ```
